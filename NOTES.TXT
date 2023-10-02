@@ -3,6 +3,11 @@
 - The solution is that when I change the type of the chart, I go into 'default'. I can't go back to anything outside default. ADD A warning OK SUGAR
 
 
-- I want to CLONE a PAGE
-- I want to be able to change the type of the chart
-- I want to be able to change the type of the sections
+- I want to CLONE a PAGE     DONE BITHC
+
+
+- I want to be able to change the type of the chart OK SUGAR
+
+
+
+- I want to create a new api configuration if I edit any API settings OK SUGAR

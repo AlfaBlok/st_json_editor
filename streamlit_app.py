@@ -105,13 +105,14 @@ def handle_selectConfig(value="", unique_key=""):
 
     new_value = col2.selectbox("Configuration name", options, current_config, key=unique_key)
     return new_value
-def handle_select_section_type(value="", unique_key=""):
+def handle_text_chart_selection(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
     # get names from chart_types.json
     options = ['chart','text']
     # we find which of the options is the current value, and use that index as the default index
     current_chart = next((index for (index, d) in enumerate(options) if d == value), None)
-    new_value = col2.selectbox("Section Type", options, current_chart, key=unique_key)
+    col2.code("SECTION TYPE: " + options[current_chart])
+    new_value = value
     return new_value
 
 def render_data_ux():
@@ -158,7 +159,7 @@ def render_json(data, prefix="", hierarchy_path=""):
                 elif key == "config_name":
                     new_value = handle_selectConfig(value, unique_key=unique_key)
                 elif key == "type":
-                    new_value = handle_select_section_type(value, unique_key=unique_key)
+                    new_value = handle_text_chart_selection(value, unique_key=unique_key)
                 else:
                     new_value = col2.text_input(prefix + key + " Value", value, key=unique_key)
                 
