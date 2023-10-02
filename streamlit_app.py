@@ -3,6 +3,7 @@ import json
 import copy
 
 FILENAME = "pages.json"
+API_CONFIG_FILENAME = "api_configuration.json"
 
 # Load JSON data from a file
 def load_json(filename):
@@ -21,12 +22,19 @@ def display_json(data, prefix="", hierarchy_path=""):
             col1, col2 = st.columns([1,5])
             # if value != "": col1.write(key)
             unique_key = hierarchy_path + "-" + key
+            
             if isinstance(value, (dict, list)):
                 st.subheader(prefix + key)
                 display_json(value, prefix + key + " > ", unique_key)
             else:
                 new_value = col2.text_input(prefix + key + " Value", value, key=unique_key)
                 data[key] = new_value
+                if key == "config_name":
+                    # st.write(st.session_state.selected_api_config)
+                    config = st.session_state.api_config[st.session_state.selected_api_config]
+                    with col2.expander("API Config"):
+                        display_json(config, "API Config > ", unique_key)
+
     elif isinstance(data, list):
         for i, item in enumerate(data):
             unique_key = hierarchy_path + f"-Item-{i}"
@@ -42,31 +50,86 @@ def display_json(data, prefix="", hierarchy_path=""):
         if is_paragraphs and st.button("Add Paragraph", key=hierarchy_path + "-AddParagraph"):
             data.append({"title": "", "content": ""})
 
+
+def clear_values(data):
+    if isinstance(data, dict):
+        for key in data:
+            if isinstance(data[key], (dict, list)):
+                clear_values(data[key])
+            else:
+                data[key] = ""
+    elif isinstance(data, list):
+        for item in data:
+            clear_values(item)
+
+
+
 # Streamlit app
 def main():
     # Load data into session state if it's not already loaded
+    new_pages = 0
     if "data" not in st.session_state:
         st.session_state.data = load_json(FILENAME)
+
+    if "api_config" not in st.session_state:
+        st.session_state.api_config = load_json(API_CONFIG_FILENAME)
+
+    if "selected_value" not in st.session_state:
+        st.session_state.selected_value = ""
+
+    if "selected_api_config" not in st.session_state:
+        st.session_state.selected_api_config = 0
 
     # Check if the loaded data is a dictionary
     if isinstance(st.session_state.data, dict):
         # For dictionaries, we can select a key from the top-level items
         selected_key = st.sidebar.selectbox("Select a top level item:", list(st.session_state.data.keys()))
-        display_json(st.session_state.data[selected_key], prefix=selected_key + " > ", hierarchy_path=selected_key)
+        # for the selected key, we check if 'config_name' is present. If so, we retrieve it.
+        if 'config_name' in st.session_state.data[selected_key]:
+            # we get the index of the config name in the api_config list, by matching config_name to name
+            config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_key]['config_name']), None)
+            st.session_state.selected_api_config = config_index
+        page_data = st.session_state.data[selected_key]
+        # config_data = st.session_state.api_config[config_index] if 'config_name' in st.session_state.data[selected_key] else None
+        display_json(page_data, prefix=selected_key + " > ", hierarchy_path=selected_key)
 
     # Check if the loaded data is a list
     elif isinstance(st.session_state.data, list):
         selected_key = st.sidebar.selectbox("Browse by:", list(st.session_state.data[0].keys()))
         values = [item[selected_key] for item in st.session_state.data]
-        selected_value = st.sidebar.selectbox("Select a value:", values)
+        selected_value = st.sidebar.selectbox("Select a value:", values, index = values.index(st.session_state.selected_value) if st.session_state.selected_value in values else 0)
         selected_index = values.index(selected_value)
         st.title(selected_value)
+        # we get the index of the config name in the api_config list, by matching config_name to name
+        config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_index]["sections"][0]["config_name"]), None)
+        st.session_state.selected_api_config = config_index
         display_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
+
+
+    # Add a page button
+    st.sidebar.markdown("---")
+    if st.sidebar.button("Add a Page"):
+        # Deep copy the last page and clear its values
+        new_pages += 1
+        new_page = copy.deepcopy(st.session_state.data[-1])
+        clear_values(new_page)
+        new_page['title'] = "New Page" + str(new_pages)  # assuming the key for the page title is 'title'. Adjust if different.
+    
+        # Append the new page to the data and save
+        st.session_state.data.append(new_page)
+        
+        st.session_state.selected_value = new_page[selected_key]  # assuming selected_key holds the key identifier for pages
+        
+
+
+        st.rerun()
+
 
     # Save changes back to the JSON file
     st.sidebar.markdown("---")
     if st.sidebar.button("Save Changes"):
         save_json(st.session_state.data, FILENAME)
+        save_json(st.session_state.api_config, API_CONFIG_FILENAME)  # Save changes to the API config
         st.success("Saved!")
 
 if __name__ == "__main__":
