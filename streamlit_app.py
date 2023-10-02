@@ -30,12 +30,17 @@ def display_json(data, prefix="", hierarchy_path=""):
     elif isinstance(data, list):
         for i, item in enumerate(data):
             unique_key = hierarchy_path + f"-Item-{i}"
+            is_paragraphs = all(isinstance(item, dict) and 'title' in item and 'content' in item for item in data)
             st.subheader(prefix + str(i+1))
             if isinstance(item, (dict, list)):
                 display_json(item, prefix + f"{i+1} > ", unique_key)
             else:
                 new_value = st.text_input(prefix + f"Item {i+1}", item, key=unique_key)
                 data[i] = new_value
+        
+        # Add Paragraph button for "paragraphs" type lists
+        if is_paragraphs and st.button("Add Paragraph", key=hierarchy_path + "-AddParagraph"):
+            data.append({"title": "", "content": ""})
 
 # Streamlit app
 def main():
