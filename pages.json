@@ -1,16 +1,16 @@
 [
     {
         "title": "Market trends",
-        "topic": "Want2Buy,Want2Rent,Analytics,Trends,Market",
-        "category": "Location Analytics",
+        "topic": "",
+        "category": "Location Rankings",
         "description": "Analysis of the evolution of key market indicators: Rental and Sale Price, Demand and Supply, for a wide range of spanish locations.",
         "image": "/assets/images/article-images/line.png",
         "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
         "route": "location-trends",
         "sections": [
             {
-                "config_name": "location-trends",
                 "type": "chart",
+                "config_name": "location-trends",
                 "content": {
                     "heading": "Real estate market trends EDITED",
                     "chartType": "quad-line",
@@ -20,8 +20,8 @@
                 }
             },
             {
-                "heading": "Chart details EDITED",
                 "type": "text",
+                "heading": "Chart details EDITED",
                 "paragraphs": [
                     {
                         "title": "Sale and Rental Price",
@@ -45,16 +45,16 @@
     },
     {
         "title": "Demand Yield Map",
-        "topic": "yield,demand,apartment,Want2Buy,Analytics,Market",
-        "category": "Location Analytics 56",
+        "topic": "",
+        "category": "Location Rankings",
         "description": "Visual comparison of demand and yield for Spanish locations. Helps identify best investment opportunity locations.",
         "image": "/assets/images/article-images/scattered.png",
         "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
         "route": "demand-yield-map",
         "sections": [
             {
-                "config_name": "location-finder",
                 "type": "chart",
+                "config_name": "location-finder",
                 "content": {
                     "heading": "Demand Yield Map EDITED 99",
                     "chartType": "scattered",
@@ -64,8 +64,8 @@
                 }
             },
             {
-                "heading": "Chart details",
                 "type": "text",
+                "heading": "Chart details",
                 "paragraphs": [
                     {
                         "title": "Yield calculation",
@@ -85,16 +85,16 @@
     },
     {
         "title": "Top discount opportunities",
-        "topic": "yield",
-        "category": "trending",
+        "topic": "",
+        "category": "Asset Rankings",
         "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
         "image": "/assets/images/article-images/paginated-data-grid.png",
         "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
         "route": "top-discount-opportunities",
         "sections": [
             {
-                "config_name": "top-discount-opportunities",
                 "type": "chart",
+                "config_name": "top-discount-opportunities",
                 "content": {
                     "heading": "Top discount opportunities",
                     "chartType": "paginated-data-grid",
@@ -104,8 +104,8 @@
                 }
             },
             {
-                "heading": "Chart details",
                 "type": "text",
+                "heading": "Chart details",
                 "paragraphs": [
                     {
                         "title": "Opportunity calculation",
@@ -121,16 +121,16 @@
     },
     {
         "title": "Top Yield opportunities",
-        "topic": "yield,apartment",
-        "category": "featured,trending",
+        "topic": "",
+        "category": "Asset Rankings",
         "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
         "image": "/assets/images/article-images/paginated-data-grid.png",
         "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
         "route": "top-yield-opportunities",
         "sections": [
             {
-                "config_name": "top-yield-opportunities",
                 "type": "chart",
+                "config_name": "top-yield-opportunities",
                 "content": {
                     "chartType": "paginated-data-grid",
                     "heading": "Top yield opportunities",
@@ -141,8 +141,8 @@
                 }
             },
             {
-                "heading": "Our Data",
                 "type": "text",
+                "heading": "Our Data",
                 "paragraphs": [
                     {
                         "title": "How Data is produced",

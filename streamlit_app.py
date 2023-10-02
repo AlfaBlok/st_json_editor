@@ -6,17 +6,31 @@ FILENAME = "pages.json"
 API_CONFIG_FILENAME = "api_configuration.json"
 TOPICS = "topics.json"
 CATEGORIES = "categories.json"
+CHART_TYPES = "chart_types.json"
 
-# Load JSON data from a file
+def initialize():
+    if "data" not in st.session_state:
+        st.session_state.data = load_json(FILENAME)
+    if "api_config" not in st.session_state:
+        st.session_state.api_config = load_json(API_CONFIG_FILENAME)
+    if "topics" not in st.session_state:
+        st.session_state.topics = load_json(TOPICS)
+    if "categories" not in st.session_state:
+        st.session_state.categories = load_json(CATEGORIES)
+    if "chart_types" not in st.session_state:
+        st.session_state.chart_types = load_json(CHART_TYPES)
+    if "selected_value" not in st.session_state:
+        st.session_state.selected_value = ""
+    if "selected_api_config" not in st.session_state:
+        st.session_state.selected_api_config = 0
+    if "topic_selections" not in st.session_state:
+        st.session_state.topic_selections = {}
 def load_json(filename):
     with open(filename, "r") as file:
         return json.load(file)
-
-# Save JSON data to a file
 def save_json(data, filename):
     with open(filename, "w") as file:
         json.dump(data, file, indent=4)
-
 def handle_topic(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
     col2.write("Select topics for this page:")
@@ -46,7 +60,6 @@ def handle_topic(value="", unique_key=""):
     # Update the value based on the selected checkboxes
     new_value = ", ".join(selected_topics)
     return new_value
-
 def handle_category(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
     col2.write("Select a category for this page:")
@@ -67,102 +80,52 @@ def handle_category(value="", unique_key=""):
     new_value = col2.radio("Categories", categories_list, index=categories_list.index(selected_category) if selected_category in categories_list else 0, key=radio_key)
     st.session_state.topic_selections[radio_key] = new_value
     return new_value
-
-
-
-
-# Recursive function to display and edit nested JSON
-def display_json(data, prefix="", hierarchy_path=""):
-    if isinstance(data, dict):
-        for key, value in data.items():
-            col1, col2 = st.columns([1,5])
-            # if value != "": col1.write(key)
-            unique_key = hierarchy_path + "-" + key
-            
-            if isinstance(value, (dict, list)):
-                st.subheader(prefix + key)
-                display_json(value, prefix + key + " > ", unique_key)
-            else:
-                if key == "topic":
-                    new_value = handle_topic(value, unique_key=unique_key)
-                elif key == "category":
-                    new_value = handle_category(value, unique_key=unique_key)    
-                else:
-                    new_value = col2.text_input(prefix + key + " Value", value, key=unique_key)
-                
-                data[key] = new_value   
-
-                if key == "config_name":
-                    # st.write(st.session_state.selected_api_config)
-                    config = st.session_state.api_config[st.session_state.selected_api_config]
-                    with col2.expander("API Config"):
-                        display_json(config, "API Config > ", unique_key)
-
-                
-
-    elif isinstance(data, list):
-        for i, item in enumerate(data):
-            unique_key = hierarchy_path + f"-Item-{i}"
-            is_paragraphs = all(isinstance(item, dict) and 'title' in item and 'content' in item for item in data)
-            st.subheader(prefix + str(i+1))
-            if isinstance(item, (dict, list)):
-                display_json(item, prefix + f"{i+1} > ", unique_key)
-            else:
-                new_value = st.text_input(prefix + f"Item {i+1}", item, key=unique_key)
-                data[i] = new_value
+def display_api_configuration(value="", unique_key=""):
+        # st.write(st.session_state.selected_api_config)
+    col1, col2 = st.columns([1,5])
+    config = st.session_state.api_config[st.session_state.selected_api_config]
+    with col2.expander("API Config"):
+        render_json(config, "API Config > ", unique_key)
+def handle_chartType(value="", unique_key=""):
+    col1, col2 = st.columns([1,5])
+    # get names from chart_types.json
+    options = [item["chart_type"] for item in st.session_state.chart_types]
+    # we find the current chart type in the list of options, and use that index as the default index
+    current_chart = next((index for (index, d) in enumerate(st.session_state.chart_types) if d["chart_type"] == value), None)
+    new_value = col2.selectbox("Chart Type", options, current_chart, key=unique_key)
+    return new_value
+def handle_selectConfig(value="", unique_key=""):
+    col1, col2 = st.columns([1,5])
         
-        # Add Paragraph button for "paragraphs" type lists
-        if is_paragraphs and st.button("Add Paragraph", key=hierarchy_path + "-AddParagraph"):
-            data.append({"title": "", "content": ""})
+    # we find config_name possibilities
+    options = [item["name"] for item in st.session_state.api_config]
 
+    # we find the index of the option that matches config_name for current page
+    current_config = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == value), None)
 
-def clear_values(data):
-    if isinstance(data, dict):
-        for key in data:
-            if isinstance(data[key], (dict, list)):
-                clear_values(data[key])
-            else:
-                data[key] = ""
-    elif isinstance(data, list):
-        for item in data:
-            clear_values(item)
+    new_value = col2.selectbox("Configuration name", options, current_config, key=unique_key)
+    return new_value
+def handle_select_section_type(value="", unique_key=""):
+    col1, col2 = st.columns([1,5])
+    # get names from chart_types.json
+    options = ['chart','text']
+    # we find which of the options is the current value, and use that index as the default index
+    current_chart = next((index for (index, d) in enumerate(options) if d == value), None)
+    new_value = col2.selectbox("Section Type", options, current_chart, key=unique_key)
+    return new_value
 
-def initialize():
-
-    if "data" not in st.session_state:
-        st.session_state.data = load_json(FILENAME)
-
-    if "api_config" not in st.session_state:
-        st.session_state.api_config = load_json(API_CONFIG_FILENAME)
-
-    if "topics" not in st.session_state:
-        st.session_state.topics = load_json(TOPICS)
-
-    if "categories" not in st.session_state:
-        st.session_state.categories = load_json(CATEGORIES)
-
-    if "selected_value" not in st.session_state:
-        st.session_state.selected_value = ""
-
-    if "selected_api_config" not in st.session_state:
-        st.session_state.selected_api_config = 0
-
-    if "topic_selections" not in st.session_state:
-        st.session_state.topic_selections = {}
-
-
-def handle_data():
+def render_data_ux():
     if isinstance(st.session_state.data, dict):
         # For dictionaries, we can select a key from the top-level items
         selected_key = st.sidebar.selectbox("Select a top level item:", list(st.session_state.data.keys()))
         # for the selected key, we check if 'config_name' is present. If so, we retrieve it.
-        if 'config_name' in st.session_state.data[selected_key]:
-            # we get the index of the config name in the api_config list, by matching config_name to name
-            config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_key]['config_name']), None)
-            st.session_state.selected_api_config = config_index
+        # if 'config_name' in st.session_state.data[selected_key]:
+        #     # we get the index of the config name in the api_config list, by matching config_name to name
+        #     config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_key]['config_name']), None)
+        #     st.session_state.selected_api_config = config_index
         page_data = st.session_state.data[selected_key]
         # config_data = st.session_state.api_config[config_index] if 'config_name' in st.session_state.data[selected_key] else None
-        display_json(page_data, prefix=selected_key + " > ", hierarchy_path=selected_key)
+        render_json(page_data, prefix=selected_key + " > ", hierarchy_path=selected_key)
 
     # Check if the loaded data is a list
     elif isinstance(st.session_state.data, list):
@@ -174,7 +137,52 @@ def handle_data():
         # we get the index of the config name in the api_config list, by matching config_name to name
         config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_index]["sections"][0]["config_name"]), None)
         st.session_state.selected_api_config = config_index
-        display_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
+        render_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
+def render_json(data, prefix="", hierarchy_path=""):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            col1, col2 = st.columns([1,5])
+            # if value != "": col1.write(key)
+            unique_key = hierarchy_path + "-" + key
+            
+            if isinstance(value, (dict, list)):
+                st.subheader(prefix + key)
+                render_json(value, prefix + key + " > ", unique_key)
+            else:
+                if key == "topic":
+                    new_value = handle_topic(value, unique_key=unique_key)
+                elif key == "category":
+                    new_value = handle_category(value, unique_key=unique_key)    
+                elif key == "chartType":
+                    new_value = handle_chartType(value, unique_key=unique_key)
+                elif key == "config_name":
+                    new_value = handle_selectConfig(value, unique_key=unique_key)
+                elif key == "type":
+                    new_value = handle_select_section_type(value, unique_key=unique_key)
+                else:
+                    new_value = col2.text_input(prefix + key + " Value", value, key=unique_key)
+                
+                data[key] = new_value   
+
+                if key == "config_name":
+                    display_api_configuration(new_value, unique_key=unique_key)
+
+                
+
+    elif isinstance(data, list):
+        for i, item in enumerate(data):
+            unique_key = hierarchy_path + f"-Item-{i}"
+            is_paragraphs = all(isinstance(item, dict) and 'title' in item and 'content' in item for item in data)
+            st.subheader(prefix + str(i+1))
+            if isinstance(item, (dict, list)):
+                render_json(item, prefix + f"{i+1} > ", unique_key)
+            else:
+                new_value = st.text_input(prefix + f"Item {i+1}", item, key=unique_key)
+                data[i] = new_value
+        
+        # Add Paragraph button for "paragraphs" type lists
+        if is_paragraphs and st.button("Add Paragraph", key=hierarchy_path + "-AddParagraph"):
+            data.append({"title": "", "content": ""})
 
 
 def add_page():
@@ -184,8 +192,24 @@ def add_page():
     st.session_state.data.append(new_page)
     # Update the selected_value to the title of the new page
     st.session_state.selected_value = new_page['title']
-
-
+def clear_values(data):
+    if isinstance(data, dict):
+        for key in data:
+            if isinstance(data[key], (dict, list)):
+                clear_values(data[key])
+            else:
+                data[key] = ""
+    elif isinstance(data, list):
+        for item in data:
+            clear_values(item)
+def clone_page():
+    # selected index is simply the last item in the list
+    selected_index = len(st.session_state.data) - 1
+    # selected_index = [item['title'] for item in st.session_state.data].index(st.session_state.selected_value)
+    cloned_page = copy.deepcopy(st.session_state.data[selected_index])
+    cloned_page['title'] = f"{cloned_page['title']} (Clone)"
+    st.session_state.data.append(cloned_page)
+    st.session_state.selected_value = cloned_page['title']
 
 
 # Streamlit app
@@ -195,14 +219,19 @@ def main():
     initialize()
     # Check if the loaded data is a dictionary
 
-    handle_data()
+    render_data_ux()
 
     # Add a page button
     st.sidebar.markdown("---")
-    if st.sidebar.button("Add a Page"):
-        add_page()
+
+    if st.sidebar.button("Clone current Page"):
+        clone_page()
         st.rerun()
 
+
+    if st.sidebar.button("Add a blank Page"):
+        add_page()
+        st.rerun()
 
     # Save changes back to the JSON file
     st.sidebar.markdown("---")

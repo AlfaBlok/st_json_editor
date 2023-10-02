@@ -111,30 +111,30 @@
                 {
                     "name": "Price",
                     "id": "ad_price",
-                    "type": "price"
+                    "type": null
                 },
                 {
                     "name": "Yield",
                     "id": "estimated_yield",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_yield"
                 },
                 {
                     "name": "Discount",
                     "id": "estimated_discount",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_discount"
                 },
                 {
                     "name": "Size",
                     "id": "ad_area",
-                    "type": "unitm^2"
+                    "type": null
                 },
                 {
                     "name": "Link",
                     "id": "ad_urlactive",
                     "tdClasses": "hover:!no-underline",
-                    "type": "link-button"
+                    "type": null
                 },
                 {
                     "name": "Age",
@@ -147,12 +147,12 @@
                 {
                     "name": "Offer",
                     "id": "ad_operation",
-                    "type": "transaction-type"
+                    "type": null
                 },
                 {
                     "name": "Type",
                     "id": "type_subtype",
-                    "type": "property-type"
+                    "type": null
                 }
             ]
         }
@@ -189,30 +189,30 @@
                 {
                     "name": "Price",
                     "id": "ad_price",
-                    "type": "price"
+                    "type": null
                 },
                 {
                     "name": "Yield",
                     "id": "estimated_yield",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_yield"
                 },
                 {
                     "name": "Discount",
                     "id": "estimated_discount",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_discount"
                 },
                 {
                     "name": "Size",
                     "id": "ad_area",
-                    "type": "unitm^2"
+                    "type": null
                 },
                 {
                     "name": "Link",
                     "id": "ad_urlactive",
                     "tdClasses": "hover:!no-underline",
-                    "type": "link-button"
+                    "type": null
                 },
                 {
                     "name": "Age",
@@ -225,12 +225,12 @@
                 {
                     "name": "Offer",
                     "id": "ad_operation",
-                    "type": "transaction-type"
+                    "type": null
                 },
                 {
                     "name": "Type",
                     "id": "type_subtype",
-                    "type": "property-type"
+                    "type": null
                 }
             ]
         }
