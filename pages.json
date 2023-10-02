@@ -1,160 +1,159 @@
 [
-  {
-    "title": "Market trends",
-    "topic": "Want2Buy,Want2Rent,Analytics,Trends,Market",
-    "category": "Location Analytics",
-    "description": "Analysis of the evolution of key market indicators: Rental and Sale Price, Demand and Supply, for a wide range of spanish locations.",
-    "image": "/assets/images/article-images/line.png",
-    "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
-    "route": "location-trends",
-    "sections": [
-      {
-        "config_name": "location-trends",
-        "type": "chart",
-        "content": {
-          "heading": "Real estate market trends EDITED",
-          "chartType": "quad-line",
-          "sidebarContent": {
-            "guide_text": "This chart shows the evolution of the median price per square meter for rental and sale. It also shows the change in demand and supply, measured as number of email contacts per weekdays per available unit."
-          }
-        }
-      },
-      {
-        "heading": "Chart details EDITED",
-        "type": "text",
-        "paragraphs": [
-          {
-            "title": "Sale and Rental Price",
-            "content": "Prices are measured in €/m. Prices of all units advertised in a given location and time period are aggregated by their median. The median is used instead of the average to avoid the effect of outliers. The price is calculated as the ratio between the total price and the total surface of the unit as listed on the unit's ad."
-          },
-          {
-            "title": "Demand calculation",
-            "content": "Demand is calculated as the number of email contacts per week for a given advertised property. Median values of demand are computed for various locations, asset types and time periods."
-          },
-          {
-            "title": "How Data is produced",
-            "content": "Data is ingested directly from our data partner Idealista, major Real Estate player in Spain. The entire process is automated without any manual adjustment being placed. Read more about our data processing values here."
-          },
-          {
-            "title": "Filters available",
-            "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
-          }
+    {
+        "title": "Market trends",
+        "topic": "Want2Buy,Want2Rent,Analytics,Trends,Market",
+        "category": "Location Analytics",
+        "description": "Analysis of the evolution of key market indicators: Rental and Sale Price, Demand and Supply, for a wide range of spanish locations.",
+        "image": "/assets/images/article-images/line.png",
+        "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
+        "route": "location-trends",
+        "sections": [
+            {
+                "config_name": "location-trends",
+                "type": "chart",
+                "content": {
+                    "heading": "Real estate market trends EDITED",
+                    "chartType": "quad-line",
+                    "sidebarContent": {
+                        "guide_text": "This chart shows the evolution of the median price per square meter for rental and sale. It also shows the change in demand and supply, measured as number of email contacts per weekdays per available unit."
+                    }
+                }
+            },
+            {
+                "heading": "Chart details EDITED",
+                "type": "text",
+                "paragraphs": [
+                    {
+                        "title": "Sale and Rental Price",
+                        "content": "Prices are measured in \u00e2\u201a\u00ac/m. Prices of all units advertised in a given location and time period are aggregated by their median. The median is used instead of the average to avoid the effect of outliers. The price is calculated as the ratio between the total price and the total surface of the unit as listed on the unit's ad."
+                    },
+                    {
+                        "title": "Demand calculation",
+                        "content": "Demand is calculated as the number of email contacts per week for a given advertised property. Median values of demand are computed for various locations, asset types and time periods."
+                    },
+                    {
+                        "title": "How Data is produced",
+                        "content": "Data is ingested directly from our data partner Idealista, major Real Estate player in Spain. The entire process is automated without any manual adjustment being placed. Read more about our data processing values here."
+                    },
+                    {
+                        "title": "Filters available",
+                        "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "title": "Demand Yield Map",
-    "topic": "yield,demand,apartment,Want2Buy,Analytics,Market",
-    "category": "Location Analytics",
-    "description": "Visual comparison of demand and yield for Spanish locations. Helps identify best investment opportunity locations.",
-    "image": "/assets/images/article-images/scattered.png",
-    "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
-    "route": "demand-yield-map",
-    "sections": [
-      {
-        "config_name": "location-finder",
-        "type": "chart",
-        "content": {
-          "heading": "Demand Yield Map EDITED 99",
-          "chartType": "scattered",
-          "sidebarContent": {
-            "guide_text": "On the horizontal axis you have demand, and on the vertical axis Yield. The chart should help identify locations that are offering attractive yields, and which are simultaneously in high demand."
-          }
-        }
-      },
-      {
-        "heading": "Chart details",
-        "type": "text",
-        "paragraphs": [
-          {
-            "title": "Yield calculation",
-            "content": "Yield is calculated as the ratio between the rental price and the sale price (per squared meter). The yield of each unit is estimated separately, and then the median of all properties' yield is computed daily and averaged over a 3 month period."
-          },
-          {
-            "title": "Demand calculation",
-            "content": "Demand is calculated as the number of email contacts per week for a given advertised property. Median values of demand are computed for various locations, asset types and time periods."
-          },
-          {
-            "title": "Filters available",
-            "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
-          }
+    },
+    {
+        "title": "Demand Yield Map",
+        "topic": "yield,demand,apartment,Want2Buy,Analytics,Market",
+        "category": "Location Analytics 56",
+        "description": "Visual comparison of demand and yield for Spanish locations. Helps identify best investment opportunity locations.",
+        "image": "/assets/images/article-images/scattered.png",
+        "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
+        "route": "demand-yield-map",
+        "sections": [
+            {
+                "config_name": "location-finder",
+                "type": "chart",
+                "content": {
+                    "heading": "Demand Yield Map EDITED 99",
+                    "chartType": "scattered",
+                    "sidebarContent": {
+                        "guide_text": "On the horizontal axis you have demand, and on the vertical axis Yield. The chart should help identify locations that are offering attractive yields, and which are simultaneously in high demand."
+                    }
+                }
+            },
+            {
+                "heading": "Chart details",
+                "type": "text",
+                "paragraphs": [
+                    {
+                        "title": "Yield calculation",
+                        "content": "Yield is calculated as the ratio between the rental price and the sale price (per squared meter). The yield of each unit is estimated separately, and then the median of all properties' yield is computed daily and averaged over a 3 month period."
+                    },
+                    {
+                        "title": "Demand calculation",
+                        "content": "Demand is calculated as the number of email contacts per week for a given advertised property. Median values of demand are computed for various locations, asset types and time periods."
+                    },
+                    {
+                        "title": "Filters available",
+                        "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "title": "Top discount opportunities",
-    "topic": "yield",
-    "category": "trending",
-    "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
-    "image": "/assets/images/article-images/paginated-data-grid.png",
-    "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
-    "route": "top-discount-opportunities",
-    "sections": [
-      {
-        "config_name": "top-discount-opportunities",
-        "type": "chart",
-        "content": {
-          "heading": "Top discount opportunities",
-          "chartType": "paginated-data-grid",
-          "sidebarContent": {
-            "guide_text": "This is a table. Each row is an opportunity, with data such as price, address, and estimated yield."
-          }
-        }
-      },
-      {
-        "heading": "Chart details",
-        "type": "text",
-        "paragraphs": [
-          {
-            "title": "Opportunity calculation",
-            "content": "The opportunity is determined by several factors including: Yield potential, property location, current market demand, and others. The best opportunities are listed at the top."
-          },
-          {
-            "title": "Filters available",
-            "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
-          }
+    },
+    {
+        "title": "Top discount opportunities",
+        "topic": "yield",
+        "category": "trending",
+        "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
+        "image": "/assets/images/article-images/paginated-data-grid.png",
+        "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
+        "route": "top-discount-opportunities",
+        "sections": [
+            {
+                "config_name": "top-discount-opportunities",
+                "type": "chart",
+                "content": {
+                    "heading": "Top discount opportunities",
+                    "chartType": "paginated-data-grid",
+                    "sidebarContent": {
+                        "guide_text": "This is a table. Each row is an opportunity, with data such as price, address, and estimated yield."
+                    }
+                }
+            },
+            {
+                "heading": "Chart details",
+                "type": "text",
+                "paragraphs": [
+                    {
+                        "title": "Opportunity calculation",
+                        "content": "The opportunity is determined by several factors including: Yield potential, property location, current market demand, and others. The best opportunities are listed at the top."
+                    },
+                    {
+                        "title": "Filters available",
+                        "content": "You can add combinations of the following dimensions: Location, and Asset Type. For example, Flats in Barcelona, or Offices in Valladolid. Locations can be selected on a Region, City, and Neighborhood level where available. For example you can say parking lots in Andalucia, or Penthouses in El Poblenou Barcelona."
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  },
-  {
-    "title": "Top Yield opportunities",
-    "topic": "yield,apartment",
-    "category": "featured,trending",
-    "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
-    "image": "/assets/images/article-images/paginated-data-grid.png",
-    "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
-    "route": "top-yield-opportunities",
-    "sections": [
-      {
-        "config_name": "top-yield-opportunities",
-        "type": "chart",
-        "content": {
-          "chartType": "paginated-data-grid",
-          "heading": "Top yield opportunities",
-          "sortBy": "estimated_yield",
-          "sidebarContent": {
-            "guide_text": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information."
-          }
-        }
-      },
-      {
-        "heading": "Our Data",
-        "type": "text",
-        "paragraphs": [
-          {
-            "title": "How Data is produced",
-            "content": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data. Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data."
-          },
-          {
-            "title": "Data Source",
-            "content": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data. Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data."
-          }
+    },
+    {
+        "title": "Top Yield opportunities",
+        "topic": "yield,apartment",
+        "category": "featured,trending",
+        "description": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information.",
+        "image": "/assets/images/article-images/paginated-data-grid.png",
+        "meta_image": "https://bwfeztnfzjfgybzwjstw.supabase.co/storage/v1/object/public/avatars/public/Screenshot%202023-02-22%20204607.png",
+        "route": "top-yield-opportunities",
+        "sections": [
+            {
+                "config_name": "top-yield-opportunities",
+                "type": "chart",
+                "content": {
+                    "chartType": "paginated-data-grid",
+                    "heading": "Top yield opportunities",
+                    "sortBy": "estimated_yield",
+                    "sidebarContent": {
+                        "guide_text": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data. We show clear Information."
+                    }
+                }
+            },
+            {
+                "heading": "Our Data",
+                "type": "text",
+                "paragraphs": [
+                    {
+                        "title": "How Data is produced",
+                        "content": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data. Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data."
+                    },
+                    {
+                        "title": "Data Source",
+                        "content": "Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data. Short description of what the graph is showing the user. With this we explain the content and make it more clear for the user. We bring clarity and transparency to the data and make sure everyone understands the given data."
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
-  
+    }
 ]

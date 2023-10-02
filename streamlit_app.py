@@ -4,6 +4,9 @@ import copy
 
 FILENAME = "pages.json"
 API_CONFIG_FILENAME = "api_configuration.json"
+TOPICS = "topics.json"
+CATEGORIES = "categories.json"
+
 
 # Load JSON data from a file
 def load_json(filename):
@@ -62,12 +65,8 @@ def clear_values(data):
         for item in data:
             clear_values(item)
 
+def initialize():
 
-
-# Streamlit app
-def main():
-    # Load data into session state if it's not already loaded
-    new_pages = 0
     if "data" not in st.session_state:
         st.session_state.data = load_json(FILENAME)
 
@@ -80,7 +79,8 @@ def main():
     if "selected_api_config" not in st.session_state:
         st.session_state.selected_api_config = 0
 
-    # Check if the loaded data is a dictionary
+
+def handle_data():
     if isinstance(st.session_state.data, dict):
         # For dictionaries, we can select a key from the top-level items
         selected_key = st.sidebar.selectbox("Select a top level item:", list(st.session_state.data.keys()))
@@ -106,22 +106,30 @@ def main():
         display_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
 
 
+def add_page():
+    new_page = copy.deepcopy(st.session_state.data[-1])
+    clear_values(new_page)
+    new_page['title'] = f"New Page {len(st.session_state.data) + 1}"  # Use the length to generate a new name
+    st.session_state.data.append(new_page)
+    # Update the selected_value to the title of the new page
+    st.session_state.selected_value = new_page['title']
+
+
+
+
+# Streamlit app
+def main():
+    new_pages = 0
+    
+    initialize()
+    # Check if the loaded data is a dictionary
+
+    handle_data()
+
     # Add a page button
     st.sidebar.markdown("---")
     if st.sidebar.button("Add a Page"):
-        # Deep copy the last page and clear its values
-        new_pages += 1
-        new_page = copy.deepcopy(st.session_state.data[-1])
-        clear_values(new_page)
-        new_page['title'] = "New Page" + str(new_pages)  # assuming the key for the page title is 'title'. Adjust if different.
-    
-        # Append the new page to the data and save
-        st.session_state.data.append(new_page)
-        
-        st.session_state.selected_value = new_page[selected_key]  # assuming selected_key holds the key identifier for pages
-        
-
-
+        add_page()
         st.rerun()
 
 
