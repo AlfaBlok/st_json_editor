@@ -7,7 +7,34 @@
 
 
 - I want to be able to change the type of the chart OK SUGAR
+> When chart type changes, we need to change the config_name to point to a new one api_configuration.
+> The previous api_configuration will be deleted.
+> We will need to create a new api_configuration with a new config_name.
+> This api_configuration will be a deep copy of the default configuration for that chart.
+> This api_configuration will be appended to the other api_configurations, in the last place.
+> The page_data needs to be updated to point to the new api_configuration
+
+
+> The api_configuration will be HARDCODED so user can't change it.
+
 
 
 
 - I want to create a new api configuration if I edit any API settings OK SUGAR
+
+
+
+
+
+2:{
+"name":"top-yield-opportunities"
+"filters":{...}
+"api":{...}
+"chart":{...}
+}
+3:{
+"chart_type":"scattered"
+"default_settings":{...}
+"name":"Market trends-sections-Item-0-content-chartType"
+}
+]

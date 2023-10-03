@@ -83,76 +83,97 @@ def handle_category(value="", unique_key=""):
 def display_api_configuration(value="", unique_key=""):
         # st.write(st.session_state.selected_api_config)
     col1, col2 = st.columns([1,5])
+     
     config = st.session_state.api_config[st.session_state.selected_api_config]
-    with col2.expander("API Config"):
+    with col2.expander("Chart API config details"):
         render_json(config, "API Config > ", unique_key)
 def handle_chartType(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
-    # get names from chart_types.json
     options = [item["chart_type"] for item in st.session_state.chart_types]
-    # we find the current chart type in the list of options, and use that index as the default index
     current_chart = next((index for (index, d) in enumerate(st.session_state.chart_types) if d["chart_type"] == value), None)
-    
+    col2.code("CHART TYPE: " + options[current_chart])
+
+    new_value = col2.selectbox("Chart Type", options, current_chart, key=unique_key + "-chartType")
+    col2.warning("Changing the chart type will erase current chart configuration.")
     if col2.button("Change chart type", key=unique_key):
-        col2.warning("Changing the chart type will erase current chart configuration. ")
-        new_value = col2.selectbox("Chart Type", options, current_chart, key=unique_key+ "-chartType")
-        # we update session state with the new chart type
-        # we retrieve the chart type configuration from chart_types.json that matches the new chart type
-        # we append a new config_name to the api_config list, with the new chart type configuration
-        # we add the key 'name' to the new config_name, named for the title of the page
+        # Delete the current chart configuration
+        del st.session_state.api_config[st.session_state.selected_api_config]
 
-        st.session_state.selected_api_config = len(st.session_state.api_config)
-        st.session_state.api_config.append(st.session_state.chart_types[current_chart])
-        st.session_state.api_config[-1]["name"] = unique_key
+        # Retrieve a copy of the default chart configuration for the new chart type
+        default_config = next((item for item in st.session_state.chart_types if item["chart_type"] == new_value), None)
+        # we navigate to the key "default_settings" in the default config
+        default_config = default_config["default_settings"]
+        # Add a new chart configuration 
+        st.session_state.api_config.append(copy.deepcopy(default_config))
+        st.session_state.api_config[-1]["name"] = st.session_state.data[st.session_state.selected_article]["title"] + " // " + new_value + " chart settings"
+        st.session_state.selected_api_config = len(st.session_state.api_config) - 1
 
+        # we update page data to point to the new config
+        st.write(st.session_state.selected_article)
+        # st.session_state.data[st.session_state.selected_article]["config_name"] = unique_key
+        # st.session_state.data[st.session_state.selected_article]["chartType"] = new_value
+        st.session_state.data[st.session_state.selected_article]["sections"][0]["config_name"] = unique_key
+        st.session_state.data[st.session_state.selected_article]["sections"][0]["content"]["chartType"] = new_value
+
+        col2.success("Chart type changed to " + new_value)
+        
+        # we wait 1 sec
+        import time
+        time.sleep(1)
+
+        st.rerun()
     else:
         new_value = value
+
     return new_value
+
+
+
 def handle_selectConfig(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
         
     # we find config_name possibilities
     options = [item["name"] for item in st.session_state.api_config]
 
-    # we find the index of the option that matches config_name for current page
-    current_config = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == value), None)
+    # we find the index of the option that matches config_name for current page, we default to last index if not found
+    # current_config = len(st.session_state.api_config) - 1
 
-    new_value = col2.selectbox("Configuration name", options, current_config, key=unique_key)
+
+    current_config = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == value), len(st.session_state.api_config) - 1)
+    st.session_state.selected_api_config = current_config
+
+    # new_value = col2.selectbox("Configuration name", options, current_config, key=unique_key)
+
+    col2.code("CONFIG NAME: " + options[current_config])
+    new_value = value   
+
     return new_value
 def handle_text_chart_selection(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
+    # col1.write("Value: " + value)
     # get names from chart_types.json
     options = ['chart','text']
-    # we find which of the options is the current value, and use that index as the default index
-    current_chart = next((index for (index, d) in enumerate(options) if d == value), None)
-    col2.code("SECTION TYPE: " + options[current_chart])
-    new_value = value
-    return new_value
+    # # we find which of the options is the current value, and use that index as the default index
+    # current_chart = next((index for (index, d) in enumerate(options) if d == value), None)
+    # col2.write("value:" + value)
+    if value:
+        col2.code("SECTION TYPE: " + value)
+        new_value = value
+        return new_value
+    else:
+        return None
 
 def render_data_ux():
-    if isinstance(st.session_state.data, dict):
-        # For dictionaries, we can select a key from the top-level items
-        selected_key = st.sidebar.selectbox("Select a top level item:", list(st.session_state.data.keys()))
-        # for the selected key, we check if 'config_name' is present. If so, we retrieve it.
-        # if 'config_name' in st.session_state.data[selected_key]:
-        #     # we get the index of the config name in the api_config list, by matching config_name to name
-        #     config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_key]['config_name']), None)
-        #     st.session_state.selected_api_config = config_index
-        page_data = st.session_state.data[selected_key]
-        # config_data = st.session_state.api_config[config_index] if 'config_name' in st.session_state.data[selected_key] else None
-        render_json(page_data, prefix=selected_key + " > ", hierarchy_path=selected_key)
-
-    # Check if the loaded data is a list
-    elif isinstance(st.session_state.data, list):
-        selected_key = "title" #st.sidebar.selectbox("Browse by:", list(st.session_state.data[0].keys()))
-        values = [item[selected_key] for item in st.session_state.data]
-        selected_value = st.sidebar.selectbox("Select an article:", values, index = values.index(st.session_state.selected_value) if st.session_state.selected_value in values else 0)
-        selected_index = values.index(selected_value)
-        st.title(selected_value)
-        # we get the index of the config name in the api_config list, by matching config_name to name
-        config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_index]["sections"][0]["config_name"]), None)
-        st.session_state.selected_api_config = config_index
-        render_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
+    selected_key = "title" #st.sidebar.selectbox("Browse by:", list(st.session_state.data[0].keys()))
+    values = [item[selected_key] for item in st.session_state.data]
+    selected_value = st.sidebar.selectbox("Select an article:", values, index = values.index(st.session_state.selected_value) if st.session_state.selected_value in values else 0)
+    selected_index = values.index(selected_value)
+    st.title(selected_value)
+    # we get the index of the config name in the api_config list, by matching config_name to name
+    config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_index]["sections"][0]["config_name"]), None)
+    st.session_state.selected_api_config = config_index
+    st.session_state.selected_article = selected_index
+    render_json(st.session_state.data[selected_index], prefix="", hierarchy_path=selected_value)
 def render_json(data, prefix="", hierarchy_path=""):
     if isinstance(data, dict):
         for key, value in data.items():
@@ -179,10 +200,9 @@ def render_json(data, prefix="", hierarchy_path=""):
                 
                 data[key] = new_value   
 
-                if key == "config_name":
+                if key == "chartType":
                     display_api_configuration(new_value, unique_key=unique_key)
-
-                
+               
 
     elif isinstance(data, list):
         for i, item in enumerate(data):
