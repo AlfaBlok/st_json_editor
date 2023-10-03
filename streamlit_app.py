@@ -92,7 +92,21 @@ def handle_chartType(value="", unique_key=""):
     options = [item["chart_type"] for item in st.session_state.chart_types]
     # we find the current chart type in the list of options, and use that index as the default index
     current_chart = next((index for (index, d) in enumerate(st.session_state.chart_types) if d["chart_type"] == value), None)
-    new_value = col2.selectbox("Chart Type", options, current_chart, key=unique_key)
+    
+    if col2.button("Change chart type", key=unique_key):
+        col2.warning("Changing the chart type will erase current chart configuration. ")
+        new_value = col2.selectbox("Chart Type", options, current_chart, key=unique_key+ "-chartType")
+        # we update session state with the new chart type
+        # we retrieve the chart type configuration from chart_types.json that matches the new chart type
+        # we append a new config_name to the api_config list, with the new chart type configuration
+        # we add the key 'name' to the new config_name, named for the title of the page
+
+        st.session_state.selected_api_config = len(st.session_state.api_config)
+        st.session_state.api_config.append(st.session_state.chart_types[current_chart])
+        st.session_state.api_config[-1]["name"] = unique_key
+
+    else:
+        new_value = value
     return new_value
 def handle_selectConfig(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
