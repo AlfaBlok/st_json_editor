@@ -1,5 +1,6 @@
 [
     {
+        "name": "location-trends",
         "filters": {
             "location": "True",
             "priceRange": "False",
@@ -50,88 +51,10 @@
                 "label": "Sale Demand",
                 "unitY": ""
             }
-        ],
-        "name": "Market trends // quad-line chart settings"
+        ]
     },
     {
-        "filters": {
-            "location": "True",
-            "priceRange": "True",
-            "transactionType": "True"
-        },
-        "api": {
-            "url": "https://api.tinybird.co/v0/pipes/top_yield_api33.json",
-            "params": {
-                "comunidad": "region",
-                "ciudad": "city",
-                "barrio": "barrio",
-                "type_subtype": "type",
-                "pmin": "priceMin",
-                "pmax": "priceMax",
-                "op": "transactionType",
-                "select_cols": "sortBy"
-            }
-        },
-        "chart": {
-            "defaultSort": "estimated_discount",
-            "columns": [
-                {
-                    "name": "Location",
-                    "id": "ciudad,barrio",
-                    "title": "True",
-                    "classes": "truncate max-w-[160px]"
-                },
-                {
-                    "name": "Price",
-                    "id": "ad_price",
-                    "type": "price"
-                },
-                {
-                    "name": "Yield",
-                    "id": "estimated_yield",
-                    "type": "scale-100",
-                    "sortBy": "estimated_yield"
-                },
-                {
-                    "name": "Discount",
-                    "id": "estimated_discount",
-                    "type": "scale-100",
-                    "sortBy": "estimated_discount"
-                },
-                {
-                    "name": "Size",
-                    "id": "ad_area",
-                    "type": "unitm^2"
-                },
-                {
-                    "name": "Link",
-                    "id": "ad_urlactive",
-                    "tdClasses": "hover:!no-underline",
-                    "type": "link-button"
-                },
-                {
-                    "name": "Age",
-                    "id": "adstats_daysonmarket"
-                },
-                {
-                    "name": "Contacts",
-                    "id": "adstats_contactsbyemail"
-                },
-                {
-                    "name": "Offer",
-                    "id": "ad_operation",
-                    "type": "transaction-type"
-                },
-                {
-                    "name": "Type",
-                    "id": "type_subtype",
-                    "type": "property-type"
-                }
-            ]
-        },
-        "name": "Top discount opportunities // paginated-data-grid chart settings"
-    },
-    {
+        "name": "location-finder",
         "filters": {
             "location": "True",
             "priceRange": "False or Not",
@@ -154,13 +77,13 @@
             "labelY": "",
             "unitX": "",
             "unitY": "%"
-        },
-        "name": "Demand Yield Map // scattered chart settings"
+        }
     },
     {
+        "name": "top-discount-opportunities",
         "filters": {
             "location": "True",
-            "priceRange": "True",
+            "priceRange": "True or False",
             "transactionType": "True"
         },
         "api": {
@@ -188,30 +111,30 @@
                 {
                     "name": "Price",
                     "id": "ad_price",
-                    "type": "price"
+                    "type": null
                 },
                 {
                     "name": "Yield",
                     "id": "estimated_yield",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_yield"
                 },
                 {
                     "name": "Discount",
                     "id": "estimated_discount",
-                    "type": "scale-100",
+                    "type": null,
                     "sortBy": "estimated_discount"
                 },
                 {
                     "name": "Size",
                     "id": "ad_area",
-                    "type": "unitm^2"
+                    "type": null
                 },
                 {
                     "name": "Link",
                     "id": "ad_urlactive",
                     "tdClasses": "hover:!no-underline",
-                    "type": "link-button"
+                    "type": null
                 },
                 {
                     "name": "Age",
@@ -224,15 +147,92 @@
                 {
                     "name": "Offer",
                     "id": "ad_operation",
-                    "type": "transaction-type"
+                    "type": null
                 },
                 {
                     "name": "Type",
                     "id": "type_subtype",
-                    "type": "property-type"
+                    "type": null
                 }
             ]
+        }
+    },
+    {
+        "name": "top-yield-opportunities",
+        "filters": {
+            "location": "True",
+            "priceRange": "True or False 99",
+            "transactionType": "True"
         },
-        "name": "Top Yield opportunities // paginated-data-grid chart settings"
+        "api": {
+            "url": "https://api.tinybird.co/v0/pipes/top_yield_api33.json",
+            "params": {
+                "comunidad": "region",
+                "ciudad": "city",
+                "barrio": "barrio",
+                "type_subtype": "type",
+                "pmin": "priceMin",
+                "pmax": "priceMax",
+                "op": "transactionType",
+                "select_cols": "sortBy"
+            }
+        },
+        "chart": {
+            "defaultSort": "estimated_yield",
+            "columns": [
+                {
+                    "name": "Location",
+                    "id": "ciudad,barrio",
+                    "title": "True",
+                    "classes": "truncate max-w-[160px]"
+                },
+                {
+                    "name": "Price",
+                    "id": "ad_price",
+                    "type": null
+                },
+                {
+                    "name": "Yield",
+                    "id": "estimated_yield",
+                    "type": null,
+                    "sortBy": "estimated_yield"
+                },
+                {
+                    "name": "Discount",
+                    "id": "estimated_discount",
+                    "type": null,
+                    "sortBy": "estimated_discount"
+                },
+                {
+                    "name": "Size",
+                    "id": "ad_area",
+                    "type": null
+                },
+                {
+                    "name": "Link",
+                    "id": "ad_urlactive",
+                    "tdClasses": "hover:!no-underline",
+                    "type": null
+                },
+                {
+                    "name": "Age",
+                    "id": "adstats_daysonmarket"
+                },
+                {
+                    "name": "Contacts",
+                    "id": "adstats_contactsbyemail"
+                },
+                {
+                    "name": "Offer",
+                    "id": "ad_operation",
+                    "type": null
+                },
+                {
+                    "name": "Type",
+                    "id": "type_subtype",
+                    "type": null
+                }
+            ]
+        }
     }
 ]

@@ -10,7 +10,7 @@
         "sections": [
             {
                 "type": "chart",
-                "config_name": "Market trends // quad-line chart settings",
+                "config_name": "location-trends",
                 "content": {
                     "heading": "Real estate market trends EDITED",
                     "chartType": "quad-line",
@@ -54,7 +54,7 @@
         "sections": [
             {
                 "type": "chart",
-                "config_name": "Demand Yield Map // scattered chart settings",
+                "config_name": "location-finder",
                 "content": {
                     "heading": "Demand Yield Map EDITED 99",
                     "chartType": "scattered",
@@ -94,7 +94,7 @@
         "sections": [
             {
                 "type": "chart",
-                "config_name": "Top discount opportunities // paginated-data-grid chart settings",
+                "config_name": "top-discount-opportunities",
                 "content": {
                     "heading": "Top discount opportunities",
                     "chartType": "paginated-data-grid",
@@ -130,7 +130,7 @@
         "sections": [
             {
                 "type": "chart",
-                "config_name": "Top Yield opportunities // paginated-data-grid chart settings",
+                "config_name": "top-yield-opportunities",
                 "content": {
                     "chartType": "paginated-data-grid",
                     "heading": "Top yield opportunities",

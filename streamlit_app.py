@@ -84,9 +84,9 @@ def display_api_configuration(value="", unique_key=""):
         # st.write(st.session_state.selected_api_config)
     col1, col2 = st.columns([1,5])
      
-    config = st.session_state.api_config[st.session_state.selected_api_config]
+    # config = st.session_state.api_config[st.session_state.selected_api_config]
     with col2.expander("Chart API config details"):
-        render_json(config, "API Config > ", unique_key)
+        render_json(st.session_state.api_config[st.session_state.selected_api_config], "API Config > ", unique_key)
 def handle_chartType(value="", unique_key=""):
     col1, col2 = st.columns([1,5])
     options = [item["chart_type"] for item in st.session_state.chart_types]
@@ -104,15 +104,16 @@ def handle_chartType(value="", unique_key=""):
         # we navigate to the key "default_settings" in the default config
         default_config = default_config["default_settings"]
         # Add a new chart configuration 
+        new_name = st.session_state.data[st.session_state.selected_article]["title"] + " // " + new_value + " chart settings"
         st.session_state.api_config.append(copy.deepcopy(default_config))
-        st.session_state.api_config[-1]["name"] = st.session_state.data[st.session_state.selected_article]["title"] + " // " + new_value + " chart settings"
+        st.session_state.api_config[-1]["name"] = new_name
         st.session_state.selected_api_config = len(st.session_state.api_config) - 1
 
         # we update page data to point to the new config
         st.write(st.session_state.selected_article)
         # st.session_state.data[st.session_state.selected_article]["config_name"] = unique_key
         # st.session_state.data[st.session_state.selected_article]["chartType"] = new_value
-        st.session_state.data[st.session_state.selected_article]["sections"][0]["config_name"] = unique_key
+        st.session_state.data[st.session_state.selected_article]["sections"][0]["config_name"] = new_name
         st.session_state.data[st.session_state.selected_article]["sections"][0]["content"]["chartType"] = new_value
 
         col2.success("Chart type changed to " + new_value)
@@ -127,6 +128,23 @@ def handle_chartType(value="", unique_key=""):
 
     return new_value
 
+def clone_api_config(new_title,chart_type):
+        # Retrieve a copy of the default chart configuration for the new chart type
+        default_config = next((item for item in st.session_state.chart_types if item["chart_type"] == chart_type), None)
+        # we navigate to the key "default_settings" in the default config
+        default_config = default_config["default_settings"]
+        # Add a new chart configuration 
+        new_name = new_title + " // " + chart_type + " chart settings"
+        st.session_state.api_config.append(copy.deepcopy(default_config))
+        st.session_state.api_config[-1]["name"] = new_name
+        st.session_state.selected_api_config = len(st.session_state.api_config) - 1
+
+        # we update page data to point to the new config
+        st.write(st.session_state.selected_article)
+        # st.session_state.data[st.session_state.selected_article]["config_name"] = unique_key
+        # st.session_state.data[st.session_state.selected_article]["chartType"] = new_value
+        st.session_state.data[st.session_state.selected_article]["sections"][0]["config_name"] = new_name
+        st.session_state.data[st.session_state.selected_article]["sections"][0]["content"]["chartType"] = chart_type
 
 
 def handle_selectConfig(value="", unique_key=""):
@@ -164,9 +182,10 @@ def handle_text_chart_selection(value="", unique_key=""):
         return None
 
 def render_data_ux():
+    st.sidebar.title("InfoHomes Page Manager v0.1")
     selected_key = "title" #st.sidebar.selectbox("Browse by:", list(st.session_state.data[0].keys()))
     values = [item[selected_key] for item in st.session_state.data]
-    selected_value = st.sidebar.selectbox("Select an article:", values, index = values.index(st.session_state.selected_value) if st.session_state.selected_value in values else 0)
+    selected_value = st.sidebar.selectbox("Select an article to edit", values, index = values.index(st.session_state.selected_value) if st.session_state.selected_value in values else 0)
     selected_index = values.index(selected_value)
     st.title(selected_value)
     # we get the index of the config name in the api_config list, by matching config_name to name
@@ -201,8 +220,7 @@ def render_json(data, prefix="", hierarchy_path=""):
                 data[key] = new_value   
 
                 if key == "chartType":
-                    display_api_configuration(new_value, unique_key=unique_key)
-               
+                    display_api_configuration(None, unique_key=unique_key)
 
     elif isinstance(data, list):
         for i, item in enumerate(data):
@@ -239,17 +257,37 @@ def clear_values(data):
             clear_values(item)
 def clone_page():
     # selected index is simply the last item in the list
-    selected_index = len(st.session_state.data) - 1
+    # selected_index = len(st.session_state.data) - 1
+    selected_index = st.session_state.selected_article
     # selected_index = [item['title'] for item in st.session_state.data].index(st.session_state.selected_value)
     cloned_page = copy.deepcopy(st.session_state.data[selected_index])
     cloned_page['title'] = f"{cloned_page['title']} (Clone)"
     st.session_state.data.append(cloned_page)
     st.session_state.selected_value = cloned_page['title']
+    st.session_state.selected_article = len(st.session_state.data) - 1
+
+    # we clone the api_config
+    clone_api_config(cloned_page['title'],cloned_page['sections'][0]['content']['chartType'])
+
+def export_backup():
+    try:
+        import datetime
+        import shutil
+        now = datetime.datetime.now()
+        date = now.strftime("%Y-%m-%d-%H-%M")
+        backup_file_name = './backup/pages_backup_' + date + '.json'
+        shutil.copyfile(FILENAME, backup_file_name)
+        backup_file_name_api = './backup/api_configuration_backup_' + date + '.json'    
+        shutil.copyfile(API_CONFIG_FILENAME, backup_file_name_api)
+        save_json(st.session_state.data, FILENAME)
+        save_json(st.session_state.api_config, API_CONFIG_FILENAME)  # Save changes to the API config
+        st.sidebar.success("Export successfull!")
+    except Exception as e:
+        st.sidebar.error(f"Export failed! {e}")
 
 
 # Streamlit app
 def main():
-    new_pages = 0
     
     initialize()
     # Check if the loaded data is a dictionary
@@ -259,21 +297,39 @@ def main():
     # Add a page button
     st.sidebar.markdown("---")
 
-    if st.sidebar.button("Clone current Page"):
+    st.sidebar.write("Create a new page by cloning current page")
+    if st.sidebar.button("Clone page"):
         clone_page()
         st.rerun()
 
+    st.sidebar.write("Delete current page")   
+    if st.sidebar.button("Delete page"):
+        # selected_index = len(st.session_state.data) - 1
+        selected_index = st.session_state.selected_article
+        del st.session_state.data[selected_index]
+        st.session_state.selected_value = st.session_state.data[-1]['title']
+        st.session_state.selected_article = len(st.session_state.data) - 1
 
-    if st.sidebar.button("Add a blank Page"):
-        add_page()
+        # we delete the api_config
+        del st.session_state.api_config[st.session_state.selected_api_config]
+        #  we retrieve the index of the config_name in the api_config list, by matching config_name to name
+        config_index = next((index for (index, d) in enumerate(st.session_state.api_config) if d["name"] == st.session_state.data[selected_index]["sections"][0]["config_name"]), None)
+        st.session_state.selected_api_config = config_index
+
         st.rerun()
 
     # Save changes back to the JSON file
     st.sidebar.markdown("---")
-    if st.sidebar.button("Save Changes"):
-        save_json(st.session_state.data, FILENAME)
-        save_json(st.session_state.api_config, API_CONFIG_FILENAME)  # Save changes to the API config
-        st.success("Saved!")
+    st.sidebar.write("Export current changes to InfoHomes website")
+    if st.sidebar.button("Export Changes"):
+        export_backup()
+
+    # Display the data and API config in the sidebar DEBUG
+    st.sidebar.markdown("---")
+    st.write("Data:")
+    st.sidebar.json(st.session_state.data, expanded=False)
+    st.write("API Config:")
+    st.sidebar.json(st.session_state.api_config, expanded=False)
 
 if __name__ == "__main__":
     main()

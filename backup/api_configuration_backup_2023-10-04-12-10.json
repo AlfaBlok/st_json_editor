@@ -56,6 +56,32 @@
     {
         "filters": {
             "location": "True",
+            "priceRange": "False or Not",
+            "transactionType": "False"
+        },
+        "api": {
+            "url": "https://api.tinybird.co/v0/pipes/latest_barrio_v01_PRODUCTION.json",
+            "params": {
+                "comunidad": "region",
+                "ciudad": "city",
+                "barrio": "barrio",
+                "type_subtype": "type"
+            }
+        },
+        "chart": {
+            "tooltipField": "xy_label",
+            "fieldX": "med_weekly_contacts_barrio_rent",
+            "fieldY": "med_barrio_yield",
+            "labelX": "Demand - weekly mail contacts",
+            "labelY": "",
+            "unitX": "",
+            "unitY": "%"
+        },
+        "name": "Demand Yield Map // scattered chart settings"
+    },
+    {
+        "filters": {
+            "location": "True",
             "priceRange": "True",
             "transactionType": "True"
         },
@@ -130,32 +156,6 @@
             ]
         },
         "name": "Top discount opportunities // paginated-data-grid chart settings"
-    },
-    {
-        "filters": {
-            "location": "True",
-            "priceRange": "False or Not",
-            "transactionType": "False"
-        },
-        "api": {
-            "url": "https://api.tinybird.co/v0/pipes/latest_barrio_v01_PRODUCTION.json",
-            "params": {
-                "comunidad": "region",
-                "ciudad": "city",
-                "barrio": "barrio",
-                "type_subtype": "type"
-            }
-        },
-        "chart": {
-            "tooltipField": "xy_label",
-            "fieldX": "med_weekly_contacts_barrio_rent",
-            "fieldY": "med_barrio_yield",
-            "labelX": "Demand - weekly mail contacts",
-            "labelY": "",
-            "unitX": "",
-            "unitY": "%"
-        },
-        "name": "Demand Yield Map // scattered chart settings"
     },
     {
         "filters": {
